@@ -1,0 +1,43 @@
+## Simple-Mirai-Bot
+一个基于 Mirai 框架的多协议轻量级机器人。
+
+*在后文中可能会称 Simple-Mirai-Bot 为 SMB*
+
+### 功能
+目前它支持的功能有:
+ - 发送消息（支持解析 Mirai Code）
+ - 基础命令系统（使用 `/help` 查看全部命令）
+ - 回复消息 （命令: `/reply`）
+ - 撤回消息 （命令: `/recall`）
+ - 发送戳一戳 （命令: `/nudge`）
+ - 发送语音消息 （命令: `/sendAudio`）
+ - 发送图片消息 （命令: `/uploadImage`）
+ - 多聊群切换 （命令: `/changeGroup`）
+ - 切换协议（在配置文件中设置）
+
+正在适配的功能有:
+ - 扩展 / 插件
+
+### 下载 & 更新
+如果您 **第一次使用** Simple-Mirai-Bot，请在 [releases](https://github.com/XIAYM-gh/Simple-Mirai-Bot/releases/latest/) 中下载最新的 Simple-Mirai-Bot.7z <br>
+如果您想要 **更新** Simple-Mirai-Bot **本体**，请在 [releases](https://github.com/XIAYM-gh/Simple-Mirai-Bot/releases/latest/) 中下载最新的 Simple-Mirai-Bot.jar 并 **覆盖** 在 SMB 工作目录.
+
+### 启动
+解压后在 Shell / CMD 中输入命令启动 Simple-Mirai-Bot.
+
+在 `Windows` 下:
+```batch
+java -cp mirai-core-all-2.12.1-all.jar;Simple-Mirai-Bot.jar cn.xiaym.simplemiraibot.BotMain
+```
+
+在 `Linux / Unix / MacOS` 系统下:
+```shell
+java -cp mirai-core-all-2.12.1-all.jar:Simple-Mirai-Bot.jar cn.xiaym.simplemiraibot.BotMain
+```
+
+*Then, Enjoy :)*
+
+### 协议
+此项目继承 Mirai 的 AGPLv3 协议，根据此协议，您对于 SMB 的任何修改或引用都必须开放源代码. <br>
+**此项目不鼓励被商业使用，仅供个人娱乐学习所用，如对您的资产或设备造成的任何损失，本项目开发者不承担责任。** <br>
+**如使用此项目，则代表您已经阅读并充分理解协议内容。**
