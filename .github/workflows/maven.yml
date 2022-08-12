@@ -1,0 +1,85 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: 安装 JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+        
+    - name: 使用 maven 编译并导出自定义依赖
+      run: mvn -B package --file pom.xml dependency:copy-dependencies -DoutputDirectory=runtime -DexcludeGroupIds=net.mamoe,org.jetbrains,org.jetbrains.kotlinx,org.bouncycastle,me.him188,org.jetbrains.kotlin,io.ktor,io.netty,com.squareup.okhttp3,com.squareup.okio -DexcludeArtifactIds=slf4j-api,log4j-api
+    
+    - name: 下载 Mirai Core All (2.12.1)
+      uses: wei/wget@v1
+      with:
+        args: -O mirai-core-all-2.12.1-all.jar https://repo1.maven.org/maven2/net/mamoe/mirai-core-all/2.12.1/mirai-core-all-2.12.1-all.jar
+    
+    - name: 创建 Jar 包
+      run: |
+        mv target/simple-mirai-bot-1.0-SNAPSHOT.jar runtime/Simple-Mirai-Bot.jar
+        mkdir outputs
+        cd outputs
+        for name in `ls ../runtime/*.jar`
+        do
+          jar -xvf $name
+        done
+        jar -cvfM ../Simple-Mirai-Bot.jar .
+        cd ..
+        
+    - name: 创建完整的 7z 包
+      uses: edgarrc/action-7z@v1
+      with:
+        args: 7z a -t7z -mx=9 Simple-Mirai-Bot.7z ./mirai-core-all-2.12.1-all.jar ./Simple-Mirai-Bot.jar
+    
+    - name: 创建 Release
+      id: create_release
+      uses: actions/create-release@v1.1.4
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+          owner: "XIAYM-gh"
+          repo: "Simple-Mirai-Bot"
+          tag_name: ${{ github.run_id }}
+          release_name: Debug 自动构建 ${{ github.run_id }}
+          draft: false
+          prerelease: true
+          body: |
+            自动构建 #${{ github.run_id }}
+            
+    - name: 上传 Jar (无运行时)
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        ssset_path: ./Simple-Mirai-Bot.jar
+        asset_name: Simple-Mirai-Bot.jar
+        asset_content_type: application/octet-stream
+        
+    - name: 上传 7z (有运行时)
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        ssset_path: ./Simple-Mirai-Bot.7z
+        asset_name: Simple-Mirai-Bot.7z
+        asset_content_type: application/octet-stream
