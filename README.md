@@ -23,6 +23,7 @@
 如果您想要 **更新** Simple-Mirai-Bot **本体**，请在 [releases](https://github.com/XIAYM-gh/Simple-Mirai-Bot/releases/latest/) 中下载最新的 Simple-Mirai-Bot.jar 并 **覆盖** 在 SMB 工作目录.
 
 ### 启动
+此项目基于 Java 17 编写，使用了许多 Java 17 的新特性，所以 *请务必使用 **Java 17 或更高版本*** 启动 SMB <br>
 解压后在 Shell / CMD 中输入命令启动 Simple-Mirai-Bot.
 
 在 `Windows` 下:
