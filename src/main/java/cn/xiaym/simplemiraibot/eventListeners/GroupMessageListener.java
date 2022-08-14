@@ -7,7 +7,6 @@ import net.mamoe.mirai.event.ListenerHost;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.GroupMessagePostSendEvent;
 import net.mamoe.mirai.event.events.MessageRecallEvent;
-import net.mamoe.mirai.event.events.NudgeEvent;
 
 import java.util.Objects;
 
@@ -23,8 +22,8 @@ public class GroupMessageListener implements ListenerHost {
 
         int MessageID = BotMain.requestNewMessageID(event.getSource());
 
-        Logger.info(String.format("[%d] 群/%d - %s (%d) : %s",
-                MessageID, groupId, senderName, senderQQ, message));
+        Logger.info(String.format("群/%d - %s (%d) : %s",
+                groupId, senderName, senderQQ, message), "[" + MessageID + "] ");
     }
 
     @EventHandler
@@ -35,8 +34,8 @@ public class GroupMessageListener implements ListenerHost {
 
         int MessageID = BotMain.requestNewMessageID(Objects.requireNonNull(event.getReceipt()).getSource());
 
-        Logger.info(String.format("[%d] %s -> 群 %d : %s",
-                MessageID, botName, targetId, message));
+        Logger.info(String.format("%s -> 群 %d : %s",
+                botName, targetId, message), "[" + MessageID + "] ");
     }
 
     @EventHandler

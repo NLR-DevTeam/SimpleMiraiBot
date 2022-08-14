@@ -1,8 +1,9 @@
-package cn.xiaym.simplemiraibot;
+package cn.xiaym.simplemiraibot.plugins;
 
-import cn.xiaym.simplemiraibot.plugins.JavaPlugin;
-import cn.xiaym.simplemiraibot.plugins.SimpleClassLoader;
+import cn.xiaym.simplemiraibot.BotMain;
 import cn.xiaym.simplemiraibot.utils.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.simpleyaml.configuration.file.YamlFile;
 
 import java.io.*;
@@ -17,11 +18,25 @@ public class PluginManager {
     private final static ArrayList<SimpleClassLoader> loaders = new ArrayList<>();
     private final static ArrayList<JavaPlugin> plugins = new ArrayList<>();
     private static boolean init;
+
+    public static boolean hasPlugin(@NotNull JavaPlugin plugin) {
+        return plugins.contains(plugin);
+    }
+
+    @Nullable
+    public static JavaPlugin getPlugin(String pluginName) {
+        for (JavaPlugin plugin : plugins)
+            if (plugin.getPluginName().equals(pluginName))
+                return plugin;
+
+        return null;
+    }
+
     public static void init() {
         if (init) return;
 
         File pluginsDir = new File("plugins");
-        if(!pluginsDir.exists() && !pluginsDir.mkdir()) Logger.warning("无法创建 plugins 文件夹，将无法加载插件.");
+        if (!pluginsDir.exists() && !pluginsDir.mkdir()) Logger.warning("无法创建 plugins 文件夹，将无法加载插件.");
 
         for (File file : Objects.requireNonNull(pluginsDir.listFiles()))
             if (file.getName().endsWith(".jar")) {

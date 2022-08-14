@@ -1,22 +1,33 @@
 package cn.xiaym.simplemiraibot;
 
-import cn.xiaym.simplemiraibot.eventListeners.*;
-import cn.xiaym.simplemiraibot.utils.*;
+import cn.xiaym.simplemiraibot.commands.Command;
+import cn.xiaym.simplemiraibot.commands.CommandManager;
+import cn.xiaym.simplemiraibot.eventListeners.BotEventListener;
+import cn.xiaym.simplemiraibot.eventListeners.FriendMessageListener;
+import cn.xiaym.simplemiraibot.eventListeners.GroupMessageListener;
+import cn.xiaym.simplemiraibot.plugins.PluginManager;
+import cn.xiaym.simplemiraibot.utils.ArgumentParser;
+import cn.xiaym.simplemiraibot.utils.Logger;
+import cn.xiaym.simplemiraibot.utils.bot.ConfigUtil;
 import cn.xiaym.simplemiraibot.utils.mirai.ProtocolConvertor;
-import net.mamoe.mirai.*;
+import net.mamoe.mirai.Bot;
+import net.mamoe.mirai.BotFactory;
 import net.mamoe.mirai.contact.Group;
 import net.mamoe.mirai.message.code.MiraiCode;
 import net.mamoe.mirai.message.data.Message;
 import net.mamoe.mirai.message.data.MessageSource;
 import net.mamoe.mirai.utils.BotConfiguration;
-import org.jline.reader.*;
+import org.jline.reader.EndOfFileException;
+import org.jline.reader.UserInterruptException;
 import org.jline.reader.impl.LineReaderImpl;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 
 public class BotMain {
     private static LineReaderImpl JLineLineReader;
@@ -179,27 +190,21 @@ public class BotMain {
         if (input.isBlank()) return;
 
         if (input.startsWith("/")) {
-            ArrayList<String> args = argumentParser.parse(input.substring(1));
+            ArrayList<String> args = ArgumentParser.parse(input.substring(1));
 
             if (args.size() == 0) {
-                CommandProcessor.helpCommand();
+                Logger.warning("未知命令!");
                 return;
             }
 
-            switch (args.get(0)) {
-                case "stop" -> CommandProcessor.stopCommand();
-                case "recall" -> CommandProcessor.recallCommand(args);
-                case "changeGroup" -> CommandProcessor.changeGroupCommand(args);
-                case "reply" -> CommandProcessor.replyCommand(args, input);
-                case "msg" -> CommandProcessor.msgCommand(args, input);
-                case "groupList" -> CommandProcessor.groupListCommand();
-                case "friendList" -> CommandProcessor.friendListCommand();
-                case "memberList" -> CommandProcessor.memberListCommand();
-                case "uploadImage" -> CommandProcessor.uploadImageCommand(args, input);
-                case "sendAudio" -> CommandProcessor.sendAudioCommand(args, input);
-                case "nudge" -> CommandProcessor.nudgeCommand(args);
-                default -> CommandProcessor.helpCommand();
+            Command cmd = CommandManager.getCommand(args.get(0));
+
+            if (cmd == null) {
+                Logger.warning("未知命令!");
+                return;
             }
+
+            cmd.getExecutor().onCommand(input, args);
 
             return;
         }

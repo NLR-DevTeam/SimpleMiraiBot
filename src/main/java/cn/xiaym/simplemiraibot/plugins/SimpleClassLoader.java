@@ -1,8 +1,5 @@
 package cn.xiaym.simplemiraibot.plugins;
 
-import cn.xiaym.simplemiraibot.PluginManager;
-import org.simpleyaml.configuration.file.YamlFile;
-
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;

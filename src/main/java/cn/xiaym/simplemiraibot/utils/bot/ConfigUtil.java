@@ -1,4 +1,4 @@
-package cn.xiaym.simplemiraibot.utils;
+package cn.xiaym.simplemiraibot.utils.bot;
 
 import org.simpleyaml.configuration.comments.format.YamlCommentFormat;
 import org.simpleyaml.configuration.file.YamlFile;

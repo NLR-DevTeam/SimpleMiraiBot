@@ -1,8 +1,8 @@
 package cn.xiaym.simplemiraibot.eventListeners;
 
 import cn.xiaym.simplemiraibot.BotMain;
-import cn.xiaym.simplemiraibot.utils.ConfigUtil;
 import cn.xiaym.simplemiraibot.utils.Logger;
+import cn.xiaym.simplemiraibot.utils.bot.ConfigUtil;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.ListenerHost;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
@@ -22,8 +22,8 @@ public class FriendMessageListener implements ListenerHost {
 
         int MessageID = BotMain.requestNewMessageID(event.getSource());
 
-        Logger.info(String.format("[%d] 私聊 - %s (%d) : %s",
-                MessageID, senderName, senderQQ, message));
+        Logger.info(String.format("私聊 - %s (%d) : %s",
+                senderName, senderQQ, message), "[" + MessageID + "] ");
     }
 
     @EventHandler
@@ -35,8 +35,8 @@ public class FriendMessageListener implements ListenerHost {
 
         int MessageID = BotMain.requestNewMessageID(Objects.requireNonNull(event.getReceipt()).getSource());
 
-        Logger.info(String.format("[%d] %s -> %s (%d) : %s",
-                MessageID, botName, targetName, targetId, message));
+        Logger.info(String.format("%s -> %s (%d) : %s",
+                botName, targetName, targetId, message), "[" + MessageID + "] ");
     }
 
     @EventHandler

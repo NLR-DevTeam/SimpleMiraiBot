@@ -1,24 +1,26 @@
 package cn.xiaym.simplemiraibot.utils;
 
 import cn.xiaym.simplemiraibot.BotMain;
+import cn.xiaym.simplemiraibot.utils.bot.ConfigUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-import static org.fusesource.jansi.Ansi.*;
+import static org.fusesource.jansi.Ansi.Color;
 import static org.fusesource.jansi.Ansi.Color.*;
+import static org.fusesource.jansi.Ansi.ansi;
 
 public class Logger {
     static {
         System.setOut(new outObserver());
         System.setErr(new PrintStream(new ByteArrayOutputStream()));
-        if(BotMain.useDebug()) System.setErr(new outObserver());
+        if (ConfigUtil.getConfig().getBoolean("misc.debug")) System.setErr(new outObserver());
     }
 
     private static void out(Object Printing, String Prefix, Color PrefixColor, Color TextColor) {
-        for(String line : String.valueOf(Printing).split("\n")) {
+        for (String line : String.valueOf(Printing).split("\n")) {
             StringBuilder sb = new StringBuilder();
 
             sb.append(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
@@ -40,6 +42,21 @@ public class Logger {
 
     public static void err(Object obj) {
         Logger.out(obj, "E", RED, RED);
+    }
+
+    public static void info(Object obj, Object prefix) {
+        for (String line : String.valueOf(obj).split("\n"))
+            Logger.out(prefix + line, "I", DEFAULT, DEFAULT);
+    }
+
+    public static void warning(Object obj, Object prefix) {
+        for (String line : String.valueOf(obj).split("\n"))
+            Logger.out(prefix + line, "W", YELLOW, YELLOW);
+    }
+
+    public static void err(Object obj, Object prefix) {
+        for (String line : String.valueOf(obj).split("\n"))
+            Logger.out(prefix + line, "E", RED, RED);
     }
 }
 

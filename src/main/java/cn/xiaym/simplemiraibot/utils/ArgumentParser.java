@@ -1,14 +1,14 @@
 package cn.xiaym.simplemiraibot.utils;
 
-import java.util.*;
+import java.util.ArrayList;
 
-public class argumentParser {
+public class ArgumentParser {
     /* 返回一个解析完的ArrayList
      * 调用方法 argumentParser.parse(String 要解析的内容)
      */
     public static ArrayList<String> parse(String origin) {
         //如果字符串为空则返回一个空的AL
-        if(origin.trim().equals("")) return new ArrayList<>();
+        if (origin.trim().equals("")) return new ArrayList<>();
 
         //初始化部分
         String[] split = origin.split(" ");
