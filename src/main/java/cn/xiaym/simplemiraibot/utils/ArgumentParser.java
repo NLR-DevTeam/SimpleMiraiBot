@@ -8,7 +8,7 @@ public class ArgumentParser {
      */
     public static ArrayList<String> parse(String origin) {
         //如果字符串为空则返回一个空的AL
-        if (origin.trim().equals("")) return new ArrayList<>();
+        if (origin.isBlank()) return new ArrayList<>();
 
         //初始化部分
         String[] split = origin.split(" ");
@@ -20,7 +20,7 @@ public class ArgumentParser {
         //解析部分
         for(String item : split) {
             //如果为 "xxx" (里面不带空格)
-            if(item.startsWith("\"") && item.endsWith("\"")) {
+            if((item.startsWith("\"") && item.endsWith("\"")) && (!item.startsWith("\\\"") && !item.endsWith("\\\""))) {
                 //这里的if是为了防止throw ArrayIndexOutOfBoundsException
                 if(item.length() > 1) output.add(item.substring(1, item.length() - 1));
                 continue;
