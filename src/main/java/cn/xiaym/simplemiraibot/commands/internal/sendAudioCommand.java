@@ -7,7 +7,6 @@ import cn.xiaym.simplemiraibot.utils.Logger;
 import cn.xiaym.simplemiraibot.utils.mirai.ExtResourceUtil;
 import net.mamoe.mirai.message.data.Audio;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class sendAudioCommand extends Command implements CommandExecutor {
@@ -26,7 +25,7 @@ public class sendAudioCommand extends Command implements CommandExecutor {
             Audio audio = ExtResourceUtil.uploadAudio(input.substring(11));
             BotMain.getCurrentGroup().sendMessage(audio);
             Logger.info("语音发送成功!");
-        } catch (IOException e) {
+        } catch (Exception e) {
             Logger.warning("语音上传失败: " + e.getMessage());
             e.printStackTrace();
         }

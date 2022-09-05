@@ -11,7 +11,7 @@ import net.mamoe.mirai.event.events.MessageRecallEvent;
 
 import java.util.Objects;
 
-public class FriendMessageListener implements ListenerHost {
+public class FriendEventListener implements ListenerHost {
     @EventHandler
     public void onFriendMessage(FriendMessageEvent event) {
         if (!ConfigUtil.getConfig().getBoolean("chatting.listenFriends")) return;

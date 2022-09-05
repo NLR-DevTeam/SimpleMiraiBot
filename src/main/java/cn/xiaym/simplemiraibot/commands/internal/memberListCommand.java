@@ -17,7 +17,6 @@ public class memberListCommand extends Command implements CommandExecutor {
     public void onCommand(String input, ArrayList<String> args) {
         Logger.info("* 当前聊群成员列表:");
         for (UserOrBot user : BotMain.getCurrentGroup().getMembers())
-            Logger.info(String.format("""
-                    - %s (%s)""", user.getNick(), user.getId()));
+            Logger.info(String.format("- %s (%s)", user.getNick(), user.getId()));
     }
 }

@@ -7,52 +7,47 @@ public class ArgumentParser {
      * 调用方法 argumentParser.parse(String 要解析的内容)
      */
     public static ArrayList<String> parse(String origin) {
-        //如果字符串为空则返回一个空的AL
         if (origin.isBlank()) return new ArrayList<>();
 
-        //初始化部分
-        String[] split = origin.split(" ");
-        ArrayList<String> output = new ArrayList<>();
-        ArrayList<String> result = new ArrayList<>();
-        boolean merging = false;
-        StringBuilder tmp = new StringBuilder();
+        boolean shouldMerge = false, space = false;
+        final char ESCAPE = '\uEEEE';
+        final String processedString = origin.trim().replace("\\\"", String.valueOf(ESCAPE));
+        final StringBuilder temp = new StringBuilder();
+        final ArrayList<String> output = new ArrayList<>();
 
-        //解析部分
-        for(String item : split) {
-            //如果为 "xxx" (里面不带空格)
-            if((item.startsWith("\"") && item.endsWith("\"")) && (!item.startsWith("\\\"") && !item.endsWith("\\\""))) {
-                //这里的if是为了防止throw ArrayIndexOutOfBoundsException
-                if(item.length() > 1) output.add(item.substring(1, item.length() - 1));
-                continue;
+        for (char ch : processedString.toCharArray()) {
+            switch (ch) {
+                case '\"' -> {
+                    if (!shouldMerge) {
+                        shouldMerge = true;
+                        continue;
+                    }
+                    shouldMerge = false;
+                    output.add(temp.toString());
+                    temp.setLength(0);
+                }
+                case ' ' -> {
+                    if (space || shouldMerge) {
+                        temp.append(ch);
+                        continue;
+                    }
+                    space = true;
+                    output.add(temp.toString());
+                    temp.setLength(0);
+                }
+                case ESCAPE -> {
+                    space = false;
+                    temp.append('"');
+                }
+                default -> {
+                    space = false;
+                    temp.append(ch);
+                }
             }
-
-            if(item.startsWith("\"") && !item.startsWith("\\\"")) {
-                tmp.append(item.substring(1)).append(" ");
-                merging = true;
-                continue;
-            }
-
-            if(item.endsWith("\"") && !item.endsWith("\\\"")) {
-                tmp.append(item, 0, item.length() - 1);
-                output.add(tmp.toString());
-                tmp.delete(0, tmp.length());
-                merging = false;
-                continue;
-            }
-
-            if(merging) {
-                tmp.append(item).append(" ");
-                continue;
-            }
-
-            //不符合上述类型 返回为不带引号的xxx
-            output.add(item);
         }
 
-        for (String s : output) {
-            result.add(s.replace("\\\"", "\""));
-        }
+        if (temp.length() > 0) output.add(temp.toString());
 
-        return result;
+        return output;
     }
 }

@@ -6,7 +6,6 @@ import cn.xiaym.simplemiraibot.utils.Logger;
 import cn.xiaym.simplemiraibot.utils.mirai.ExtResourceUtil;
 import net.mamoe.mirai.message.data.Image;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class uploadImageCommand extends Command implements CommandExecutor {
@@ -24,7 +23,7 @@ public class uploadImageCommand extends Command implements CommandExecutor {
         try {
             Image image = ExtResourceUtil.uploadImage(input.substring(13));
             Logger.info("图片上传成功! 图片的 Mirai 代码为: [mirai:image:" + image.getImageId() + "]");
-        } catch (IOException e) {
+        } catch (Exception e) {
             Logger.warning("图片上传失败: " + e.getMessage());
             e.printStackTrace();
         }

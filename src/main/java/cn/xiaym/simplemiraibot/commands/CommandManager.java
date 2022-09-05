@@ -25,6 +25,7 @@ public class CommandManager {
         registeredCommands.put(new groupListCommand(), null);
         registeredCommands.put(new friendListCommand(), null);
         registeredCommands.put(new memberListCommand(), null);
+        registeredCommands.put(new PluginsCommand(), null);
     }
 
     public static void registerCommand(@NotNull Command cmd, @NotNull JavaPlugin plugin) {

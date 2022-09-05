@@ -17,7 +17,6 @@ public class friendListCommand extends Command implements CommandExecutor {
     public void onCommand(String input, ArrayList<String> args) {
         Logger.info("* 机器人的好友列表:");
         for (UserOrBot user : BotMain.getBot().getFriends())
-            Logger.info(String.format("""
-                    - %s (%s)""", user.getNick(), user.getId()));
+            Logger.info(String.format("- %s (%s)", user.getNick(), user.getId()));
     }
 }

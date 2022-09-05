@@ -32,6 +32,10 @@ public class PluginManager {
         return null;
     }
 
+    public static ArrayList<JavaPlugin> getPlugins() {
+        return plugins;
+    }
+
     public static void init() {
         if (init) return;
 

@@ -3,8 +3,9 @@ package cn.xiaym.simplemiraibot;
 import cn.xiaym.simplemiraibot.commands.Command;
 import cn.xiaym.simplemiraibot.commands.CommandManager;
 import cn.xiaym.simplemiraibot.eventListeners.BotEventListener;
-import cn.xiaym.simplemiraibot.eventListeners.FriendMessageListener;
-import cn.xiaym.simplemiraibot.eventListeners.GroupMessageListener;
+import cn.xiaym.simplemiraibot.eventListeners.FriendEventListener;
+import cn.xiaym.simplemiraibot.eventListeners.GroupEventListener;
+import cn.xiaym.simplemiraibot.plugins.JavaPlugin;
 import cn.xiaym.simplemiraibot.plugins.PluginManager;
 import cn.xiaym.simplemiraibot.utils.ArgumentParser;
 import cn.xiaym.simplemiraibot.utils.Logger;
@@ -12,6 +13,7 @@ import cn.xiaym.simplemiraibot.utils.bot.ConfigUtil;
 import cn.xiaym.simplemiraibot.utils.mirai.ProtocolConvertor;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.BotFactory;
+import net.mamoe.mirai.contact.BotIsBeingMutedException;
 import net.mamoe.mirai.contact.Group;
 import net.mamoe.mirai.message.code.MiraiCode;
 import net.mamoe.mirai.message.data.Message;
@@ -107,8 +109,8 @@ public class BotMain {
                 }});
 
         bot.getEventChannel().registerListenerHost(new BotEventListener());
-        bot.getEventChannel().registerListenerHost(new GroupMessageListener());
-        bot.getEventChannel().registerListenerHost(new FriendMessageListener());
+        bot.getEventChannel().registerListenerHost(new GroupEventListener());
+        bot.getEventChannel().registerListenerHost(new FriendEventListener());
 
         bot.login();
 
@@ -183,11 +185,20 @@ public class BotMain {
         Logger.info("正在关闭 SimpleMiraiBot ...");
         readingThread.interrupt();
 
+        for (JavaPlugin plugin : PluginManager.getPlugins()) {
+            try {
+                plugin.onShutdown();
+            } catch (Exception e) {
+                Logger.err("无法执行插件 " + plugin.getPluginName() + " 的 onShutdown 方法.");
+                e.printStackTrace();
+            }
+        }
+
         System.exit(0);
     }
 
     public static void processInput(String input) {
-        if (input.isBlank()) return;
+        if (input.isEmpty()) return;
 
         if (input.startsWith("/")) {
             ArrayList<String> args = ArgumentParser.parse(input.substring(1));
@@ -215,7 +226,11 @@ public class BotMain {
     }
 
     public static void sendMessage(Message message) {
-        Objects.requireNonNull(bot.getGroup(defaultGroup)).sendMessage(message);
+        try {
+            Objects.requireNonNull(bot.getGroup(defaultGroup)).sendMessage(message);
+        } catch (BotIsBeingMutedException e) {
+            Logger.warning("机器人已经被禁言，无法发言。");
+        }
     }
 
     public static boolean useDebug() {

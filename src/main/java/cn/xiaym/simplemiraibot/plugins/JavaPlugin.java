@@ -2,8 +2,6 @@ package cn.xiaym.simplemiraibot.plugins;
 
 import org.simpleyaml.configuration.file.YamlFile;
 
-import java.util.ArrayList;
-
 public class JavaPlugin {
     private String pluginName, pluginVersion, pluginAuthor;
 
@@ -28,5 +26,4 @@ public class JavaPlugin {
     // 插件方法
     public void onEnable() {}
     public void onShutdown() {}
-    public void onCommand(String commandName, ArrayList<String> args) {}
 }
