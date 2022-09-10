@@ -45,7 +45,7 @@ jobs:
       - name: 创建完整的 7z 包
         uses: edgarrc/action-7z@v1
         with:
-          args: 7z a -t7z -mx=9 Simple-Mirai-Bot.7z ./mirai-core-all-2.12.1-all.jar ./Simple-Mirai-Bot.jar
+          args: 7z a -t7z -mx=9 Simple-Mirai-Bot.7z ./mirai-core-all-2.12.2-all.jar ./Simple-Mirai-Bot.jar
 
       - name: 创建 Release
         id: create_release
