@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
     
     - name: 安装 JDK 17
       uses: actions/setup-java@v3
@@ -25,10 +25,10 @@ jobs:
     - name: 使用 maven 编译并导出自定义依赖
       run: mvn -B package --file pom.xml dependency:copy-dependencies -DoutputDirectory=runtime -DexcludeGroupIds=net.mamoe,org.jetbrains,org.jetbrains.kotlinx,org.bouncycastle,me.him188,org.jetbrains.kotlin,io.ktor,io.netty,com.squareup.okhttp3,com.squareup.okio -DexcludeArtifactIds=slf4j-api,log4j-api
     
-    - name: 下载 Mirai Core All (2.12.1)
+    - name: 下载 Mirai Core All (2.12.2)
       uses: wei/wget@v1
       with:
-        args: -O mirai-core-all-2.12.1-all.jar https://repo1.maven.org/maven2/net/mamoe/mirai-core-all/2.12.1/mirai-core-all-2.12.1-all.jar
+        args: -O mirai-core-all-2.12.2-all.jar https://repo1.maven.org/maven2/net/mamoe/mirai-core-all/2.12.2/mirai-core-all-2.12.2-all.jar
     
     - name: 创建 Jar 包
       run: |

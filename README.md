@@ -27,12 +27,12 @@
 
 在 `Windows` 下:
 ```batch
-java -cp mirai-core-all-2.12.1-all.jar;Simple-Mirai-Bot.jar cn.xiaym.simplemiraibot.BotMain
+java -cp mirai-core-all-2.12.2-all.jar;Simple-Mirai-Bot.jar cn.xiaym.simplemiraibot.BotMain
 ```
 
 在 `Linux / Unix / MacOS` 系统下:
 ```shell
-java -cp mirai-core-all-2.12.1-all.jar:Simple-Mirai-Bot.jar cn.xiaym.simplemiraibot.BotMain
+java -cp mirai-core-all-2.12.2-all.jar:Simple-Mirai-Bot.jar cn.xiaym.simplemiraibot.BotMain
 ```
 
 *Then, Enjoy :)*
