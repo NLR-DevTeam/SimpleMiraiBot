@@ -4,6 +4,8 @@ import cn.xiaym.simplemiraibot.commands.Command;
 import cn.xiaym.simplemiraibot.commands.CommandExecutor;
 import cn.xiaym.simplemiraibot.commands.CommandManager;
 import cn.xiaym.simplemiraibot.utils.Logger;
+import org.jline.reader.Completer;
+import org.jline.reader.impl.completer.StringsCompleter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +25,14 @@ public class helpCommand extends Command implements CommandExecutor {
         }
 
         showCommandHelp(CommandManager.getCommand(args.get(1)));
+    }
+
+    public Completer getCommandCompleter(String label, ArrayList<String> args) {
+        ArrayList<String> arr = new ArrayList<>();
+
+        for (Command cmd : CommandManager.getCommands()) arr.add(cmd.getName());
+
+        return new StringsCompleter(arr);
     }
 
     private void showCommands() {

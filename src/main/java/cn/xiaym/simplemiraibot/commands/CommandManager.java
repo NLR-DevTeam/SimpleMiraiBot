@@ -2,9 +2,11 @@ package cn.xiaym.simplemiraibot.commands;
 
 import cn.xiaym.simplemiraibot.commands.internal.*;
 import cn.xiaym.simplemiraibot.plugins.JavaPlugin;
+import cn.xiaym.simplemiraibot.utils.bot.CommandCompleter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -26,11 +28,13 @@ public class CommandManager {
         registeredCommands.put(new friendListCommand(), null);
         registeredCommands.put(new memberListCommand(), null);
         registeredCommands.put(new PluginsCommand(), null);
+        CommandCompleter.updateCompleter();
     }
 
     public static void registerCommand(@NotNull Command cmd, @NotNull JavaPlugin plugin) {
         if (registeredCommands.containsKey(cmd)) throw new IllegalStateException("Command is already registered.");
         registeredCommands.put(cmd, plugin);
+        CommandCompleter.updateCompleter();
     }
 
     @Nullable
@@ -44,5 +48,13 @@ public class CommandManager {
 
     public static Set<Command> getCommands() {
         return registeredCommands.keySet();
+    }
+
+    public static ArrayList<String> getCommandNames() {
+        ArrayList<String> ret = new ArrayList<>();
+
+        for (Command cmd : getCommands()) ret.add("/" + cmd.getName());
+
+        return ret;
     }
 }

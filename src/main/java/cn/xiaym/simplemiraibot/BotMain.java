@@ -9,7 +9,9 @@ import cn.xiaym.simplemiraibot.plugins.JavaPlugin;
 import cn.xiaym.simplemiraibot.plugins.PluginManager;
 import cn.xiaym.simplemiraibot.utils.ArgumentParser;
 import cn.xiaym.simplemiraibot.utils.Logger;
+import cn.xiaym.simplemiraibot.utils.bot.CommandCompleter;
 import cn.xiaym.simplemiraibot.utils.bot.ConfigUtil;
+import cn.xiaym.simplemiraibot.utils.bot.InputReader;
 import cn.xiaym.simplemiraibot.utils.mirai.ProtocolConvertor;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.BotFactory;
@@ -19,9 +21,8 @@ import net.mamoe.mirai.message.code.MiraiCode;
 import net.mamoe.mirai.message.data.Message;
 import net.mamoe.mirai.message.data.MessageSource;
 import net.mamoe.mirai.utils.BotConfiguration;
-import org.jline.reader.EndOfFileException;
-import org.jline.reader.UserInterruptException;
-import org.jline.reader.impl.LineReaderImpl;
+import org.jline.reader.LineReader;
+import org.jline.reader.LineReaderBuilder;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 
@@ -32,7 +33,7 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class BotMain {
-    private static LineReaderImpl JLineLineReader;
+    private static LineReader JLineLineReader;
     private static Thread readingThread;
     private static Bot bot;
     private static boolean acceptAllGroup;
@@ -46,8 +47,8 @@ public class BotMain {
     public static void main(String[] args) {
         try {
             Terminal JLineTerminal = TerminalBuilder.builder().jansi(true).build();
-            JLineLineReader = new LineReaderImpl(JLineTerminal);
-            readingThread = new Thread(new LineReadingThread());
+            JLineLineReader = LineReaderBuilder.builder().terminal(JLineTerminal).completer(new CommandCompleter()).build();
+            readingThread = new Thread(new InputReader());
         } catch(IOException JLineEx) {
             System.out.println("无法初始化 JLine!");
             JLineEx.printStackTrace();
@@ -66,13 +67,13 @@ public class BotMain {
                 ##################################################
                 # 正在启动 Simple Mirai Bot
                 # 此项目由 Mirai 驱动，遵循 AGPLv3 协议
-                # 此项目目前处于开发阶段，遇到问题可反馈
-                # 如果登录时遇到验证码弹窗请打开 BotConfig.yml 查看解决方法
+                # 此项目目前处于开发阶段，遇到问题请反馈
+                # 如果登录时遇到验证码弹窗请打开配置文件查看解决方法
                 ##################################################
                 """);
 
-        if(ConfigUtil.getConfig().getLong("account.qq") == 0L
-            || ConfigUtil.getConfig().getString("account.password").equals("")) {
+        if (ConfigUtil.getConfig().getLong("account.qq") == 0L
+                || ConfigUtil.getConfig().getString("account.password").equals("")) {
             Logger.warning("""
                     警告: 您尚未填写 QQ号 或 密码，请在 BotConfig.yml 中更改.
                     Simple Mirai Bot 即将关闭.
@@ -160,7 +161,7 @@ public class BotMain {
         return attrList.contains(key);
     }
 
-    public static LineReaderImpl getLineReader() {
+    public static LineReader getLineReader() {
         return JLineLineReader;
     }
 
@@ -220,7 +221,7 @@ public class BotMain {
             return;
         }
 
-        if(defaultGroup == null) return;
+        if (defaultGroup == null) return;
 
         sendMessage(MiraiCode.deserializeMiraiCode(input));
     }
@@ -249,18 +250,18 @@ public class BotMain {
     }
 
     public static int getMessageIDByMessageSource(MessageSource source) {
-        if(!currentMessages.containsValue(source)) return -1;
+        if (!currentMessages.containsValue(source)) return -1;
 
-        for(Integer id : currentMessages.keySet())
-            if(currentMessages.get(id).equals(source))
+        for (Integer id : currentMessages.keySet())
+            if (currentMessages.get(id).equals(source))
                 return id;
 
         return -1;
     }
 
     public static int getMessageIDByMessageTime(int messageTime) {
-        for(Integer id : currentMessages.keySet())
-            if(currentMessages.get(id).getTime() == messageTime)
+        for (Integer id : currentMessages.keySet())
+            if (currentMessages.get(id).getTime() == messageTime)
                 return id;
 
         return -1;
@@ -276,24 +277,5 @@ public class BotMain {
 
     public static Group getCurrentGroup() {
         return bot.getGroup(defaultGroup);
-    }
-}
-
-class LineReadingThread implements Runnable {
-    @Override
-    public void run() {
-        while(!Thread.currentThread().isInterrupted()) {
-            try {
-                BotMain.processInput(BotMain.getLineReader().readLine("> "));
-            } catch(UserInterruptException | EndOfFileException CancelEx) {
-                BotMain.shutdown();
-                break;
-            } catch(Exception e) {
-                Logger.err("在 LineReadingThread 中发生了未预期的错误!");
-                e.printStackTrace();
-                BotMain.shutdown();
-                break;
-            }
-        }
     }
 }

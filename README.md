@@ -13,10 +13,9 @@
  - 发送语音消息 （命令: `/sendAudio`）
  - 发送图片消息 （命令: `/uploadImage`）
  - 多聊群切换 （命令: `/changeGroup`）
+ - 私聊 （命令: `/msg`）
  - 切换协议（在配置文件中设置）
-
-正在适配的功能有:
- - 扩展 / 插件
+ - 完整 Tab 补全支持
 
 ### 下载 & 更新
 如果您 **第一次使用** Simple-Mirai-Bot，请在 [releases](https://github.com/XIAYM-gh/Simple-Mirai-Bot/releases/latest/) 中下载最新的 Simple-Mirai-Bot.7z <br>

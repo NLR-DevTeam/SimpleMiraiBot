@@ -6,7 +6,10 @@ import cn.xiaym.simplemiraibot.commands.CommandExecutor;
 import cn.xiaym.simplemiraibot.utils.Logger;
 import cn.xiaym.simplemiraibot.utils.mirai.ExtResourceUtil;
 import net.mamoe.mirai.message.data.Audio;
+import org.jline.builtins.Completers;
+import org.jline.reader.Completer;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class sendAudioCommand extends Command implements CommandExecutor {
@@ -15,19 +18,27 @@ public class sendAudioCommand extends Command implements CommandExecutor {
         setExecutor(this);
     }
 
+    public Completer getCommandCompleter(String label, ArrayList<String> args) {
+        return new Completers.FilesCompleter(new File("."));
+    }
+
     public void onCommand(String input, ArrayList<String> args) {
         if (args.size() <= 1) {
             Logger.warning("使用方法: " + getUsage());
             return;
         }
 
-        try {
-            Audio audio = ExtResourceUtil.uploadAudio(input.substring(11));
-            BotMain.getCurrentGroup().sendMessage(audio);
-            Logger.info("语音发送成功!");
-        } catch (Exception e) {
-            Logger.warning("语音上传失败: " + e.getMessage());
-            e.printStackTrace();
-        }
+        new Thread(() -> {
+            Logger.info("正在上传语音...");
+
+            try {
+                Audio audio = ExtResourceUtil.uploadAudio(input.substring(11));
+                BotMain.getCurrentGroup().sendMessage(audio);
+                Logger.info("语音发送成功!");
+            } catch (Exception e) {
+                Logger.warning("语音上传失败: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }).start();
     }
 }

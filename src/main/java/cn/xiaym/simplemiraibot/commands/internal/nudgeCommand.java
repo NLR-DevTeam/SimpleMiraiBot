@@ -4,6 +4,9 @@ import cn.xiaym.simplemiraibot.BotMain;
 import cn.xiaym.simplemiraibot.commands.Command;
 import cn.xiaym.simplemiraibot.commands.CommandExecutor;
 import cn.xiaym.simplemiraibot.utils.Logger;
+import net.mamoe.mirai.contact.UserOrBot;
+import org.jline.reader.Completer;
+import org.jline.reader.impl.completer.StringsCompleter;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -12,6 +15,15 @@ public class nudgeCommand extends Command implements CommandExecutor {
     public nudgeCommand() {
         super("nudge", "戳一戳群内成员.", "/nudge <整数: 成员 QQ>");
         setExecutor(this);
+    }
+
+    public Completer getCommandCompleter(String label, ArrayList<String> args) {
+        ArrayList<String> arr = new ArrayList<>();
+
+        for (UserOrBot user : BotMain.getCurrentGroup().getMembers())
+            arr.add(String.valueOf(user.getId()));
+
+        return new StringsCompleter(arr);
     }
 
     public void onCommand(String input, ArrayList<String> args) {

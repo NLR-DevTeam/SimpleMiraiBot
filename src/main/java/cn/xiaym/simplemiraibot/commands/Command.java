@@ -2,6 +2,10 @@ package cn.xiaym.simplemiraibot.commands;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jline.reader.Completer;
+import org.jline.reader.impl.completer.NullCompleter;
+
+import java.util.ArrayList;
 
 public class Command {
     private String name, description, usage;
@@ -31,5 +35,12 @@ public class Command {
 
     public void setExecutor(CommandExecutor executor) {
         this.executor = executor;
+    }
+
+    /* Method getCommandCompleter:
+     * Rewrite is required.
+     */
+    public Completer getCommandCompleter(String label, ArrayList<String> args) {
+        return new NullCompleter();
     }
 }

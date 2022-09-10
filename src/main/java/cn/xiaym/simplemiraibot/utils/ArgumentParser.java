@@ -22,27 +22,22 @@ public class ArgumentParser {
                         shouldMerge = true;
                         continue;
                     }
+
                     shouldMerge = false;
                     output.add(temp.toString());
                     temp.setLength(0);
                 }
                 case ' ' -> {
-                    if (space || shouldMerge) {
+                    if (shouldMerge) {
                         temp.append(ch);
                         continue;
                     }
-                    space = true;
+
                     output.add(temp.toString());
                     temp.setLength(0);
                 }
-                case ESCAPE -> {
-                    space = false;
-                    temp.append('"');
-                }
-                default -> {
-                    space = false;
-                    temp.append(ch);
-                }
+                case ESCAPE -> temp.append('"');
+                default -> temp.append(ch);
             }
         }
 

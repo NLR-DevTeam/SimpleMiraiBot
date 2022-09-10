@@ -4,6 +4,9 @@ import cn.xiaym.simplemiraibot.BotMain;
 import cn.xiaym.simplemiraibot.commands.Command;
 import cn.xiaym.simplemiraibot.commands.CommandExecutor;
 import cn.xiaym.simplemiraibot.utils.Logger;
+import net.mamoe.mirai.contact.Group;
+import org.jline.reader.Completer;
+import org.jline.reader.impl.completer.StringsCompleter;
 
 import java.util.ArrayList;
 
@@ -11,6 +14,16 @@ public class changeGroupCommand extends Command implements CommandExecutor {
     public changeGroupCommand() {
         super("changeGroup", "切换机器人当前的聊群.", "/changeGroup <整数: 聊群号>");
         setExecutor(this);
+    }
+
+    public Completer getCommandCompleter(String label, ArrayList<String> args) {
+        ArrayList<String> arr = new ArrayList<>();
+
+        for (Group group : BotMain.getBot().getGroups()) {
+            arr.add(String.valueOf(group.getId()));
+        }
+
+        return new StringsCompleter(arr);
     }
 
     public void onCommand(String input, ArrayList<String> args) {

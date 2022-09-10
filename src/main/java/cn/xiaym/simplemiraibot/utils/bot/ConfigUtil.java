@@ -35,7 +35,7 @@ public class ConfigUtil {
         yml.addDefault("account.password", "");
         yml.addDefault("account.protocol", "AndroidPhone");
 
-        yml.path("account").comment("机器人 QQ 设置");
+        yml.path("account").comment("机器人 QQ 账号设置");
         yml.path("account.qq").comment("机器人的 QQ 号码");
         yml.path("account.password").comment("机器人 QQ 的密码");
         yml.path("account.protocol").comment("机器人登录时使用的登录协议\n可用值: AndroidPhone, AndroidPad, AndroidWatch, IPad, MacOS");
@@ -45,6 +45,7 @@ public class ConfigUtil {
         yml.addDefault("misc.useCache", false);
         yml.addDefault("misc.debug", false);
 
+        yml.path("misc").comment("杂项设置");
         yml.path("misc.logBotMessages").comment("是否输出 Mirai 的 debug 消息（如登录遇到问题可以设置为 true）");
         yml.path("misc.useCache").comment("启用机器人缓存（使得机器人启动更快，但是可能出现联系人列表不同步等情况）");
         yml.path("misc.debug").comment("是否启用调试模式（会详细打印错误日志以及启用 System.err）");
@@ -54,6 +55,7 @@ public class ConfigUtil {
         yml.addDefault("chatting.defaultGroup", 0L);
         yml.addDefault("chatting.listenFriends", true);
 
+        yml.path("chatting").comment("聊天相关设置");
         yml.path("chatting.listeningGroups").comment("填写机器人要监听的聊群，如有多个请用英文逗号（,）分割，设置为 * 监听全部聊群");
         yml.path("chatting.defaultGroup").comment("填写机器人发送消息的默认聊群（可在启动后手动切换）");
         yml.path("chatting.listenFriends").comment("是否监听好友私聊消息（如果您使用自己的插件监听请设置为 false）");

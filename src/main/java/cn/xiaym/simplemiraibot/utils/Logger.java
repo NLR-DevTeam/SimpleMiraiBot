@@ -20,16 +20,19 @@ public class Logger {
     }
 
     private static void out(Object Printing, String Prefix, Color PrefixColor, Color TextColor) {
+        StringBuilder sb = new StringBuilder();
         for (String line : String.valueOf(Printing).split("\n")) {
-            StringBuilder sb = new StringBuilder();
 
-            sb.append(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
-            sb.append(" [").append(ansi().fgBright(PrefixColor).bold().a(Prefix).reset()).append("] ");
-            sb.append(ansi().fgBright(TextColor).a(line).reset());
+            String s = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) +
+                    " [" + ansi().fgBright(PrefixColor).bold().a(Prefix).reset() + "] " +
+                    ansi().fgBright(TextColor).a(line).reset();
 
-            BotMain.printAbove(sb.toString());
-            System.out.flush();
+            if (sb.length() > 0) sb.append("\n");
+            sb.append(s);
         }
+
+        BotMain.printAbove(sb.toString());
+        System.out.flush();
     }
 
     public static void info(Object obj) {
