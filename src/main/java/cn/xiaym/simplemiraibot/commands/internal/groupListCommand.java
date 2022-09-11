@@ -16,8 +16,7 @@ public class groupListCommand extends Command implements CommandExecutor {
 
     public void onCommand(String input, ArrayList<String> args) {
         Logger.info("* 机器人加入的聊群列表:");
-        for (Group group : BotMain.getBot().getGroups())
-            if (group.getMembers().getSize() > 0)
-                Logger.info(String.format("- %s (%s) (%s)", group.getName(), group.getId(), group.getBotAsMember().getMuteTimeRemaining() > 0 ? "机器人已被禁言" : "正常"));
+        for (Group group : BotMain.getBot().getGroups().stream().filter(group -> group.getMembers().size() > 0).toList())
+            Logger.info(String.format("- %s (%s) (%s)", group.getName(), group.getId(), group.getBotAsMember().getMuteTimeRemaining() > 0 ? "机器人已被禁言" : "正常"));
     }
 }

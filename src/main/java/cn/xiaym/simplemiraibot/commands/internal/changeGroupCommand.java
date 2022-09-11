@@ -19,7 +19,7 @@ public class changeGroupCommand extends Command implements CommandExecutor {
     public Completer getCommandCompleter(String label, ArrayList<String> args) {
         ArrayList<String> arr = new ArrayList<>();
 
-        for (Group group : BotMain.getBot().getGroups()) {
+        for (Group group : BotMain.getBot().getGroups().stream().filter(group -> group.getMembers().size() > 0).toList()) {
             arr.add(String.valueOf(group.getId()));
         }
 

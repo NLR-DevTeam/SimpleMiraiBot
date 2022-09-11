@@ -132,10 +132,12 @@ public class BotMain {
 
         try {
             allowedGroups.clear();
+
             if (ConfigUtil.getConfig().getString("chatting.listeningGroups").contains("*")) {
                 acceptAllGroup = true;
                 throw new InterruptedException();
             }
+
             for (String part : ConfigUtil.getConfig().getString("chatting.listeningGroups").split(",")) {
                 allowedGroups.add(Long.parseLong(part.trim()));
             }
