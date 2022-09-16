@@ -28,6 +28,7 @@ public class CommandManager {
         registeredCommands.put(new friendListCommand(), null);
         registeredCommands.put(new memberListCommand(), null);
         registeredCommands.put(new PluginsCommand(), null);
+        registeredCommands.put(new queryImageCommand(), null);
         CommandCompleter.updateCompleter();
     }
 

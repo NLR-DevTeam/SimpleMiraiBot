@@ -104,10 +104,12 @@ public class PluginManager {
             BufferedInputStream bis = new BufferedInputStream(inputStream);
             ByteArrayOutputStream buf = new ByteArrayOutputStream();
             int result = bis.read();
+
             while(result != -1) {
                 buf.write((byte) result);
                 result = bis.read();
             }
+
             return buf.toString(charset);
         } catch(Exception e) {
             return null;

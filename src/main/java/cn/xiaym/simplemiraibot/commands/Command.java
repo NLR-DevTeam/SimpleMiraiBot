@@ -8,7 +8,9 @@ import org.jline.reader.impl.completer.NullCompleter;
 import java.util.ArrayList;
 
 public class Command {
-    private String name, description, usage;
+    private final String name;
+    private final String description;
+    private final String usage;
     private CommandExecutor executor;
 
     public Command(@NotNull String commandName, @NotNull String commandDescription, @Nullable String commandUsage) {

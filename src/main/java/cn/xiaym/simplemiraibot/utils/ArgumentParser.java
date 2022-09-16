@@ -9,7 +9,7 @@ public class ArgumentParser {
     public static ArrayList<String> parse(String origin) {
         if (origin.isBlank()) return new ArrayList<>();
 
-        boolean shouldMerge = false, space = false;
+        boolean shouldMerge = false;
         final char ESCAPE = '\uEEEE';
         final String processedString = origin.trim().replace("\\\"", String.valueOf(ESCAPE));
         final StringBuilder temp = new StringBuilder();

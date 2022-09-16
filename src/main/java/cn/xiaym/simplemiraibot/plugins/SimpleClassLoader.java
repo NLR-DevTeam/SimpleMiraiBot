@@ -1,12 +1,16 @@
 package cn.xiaym.simplemiraibot.plugins;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 public class SimpleClassLoader extends URLClassLoader {
     private final File file;
@@ -58,16 +62,35 @@ public class SimpleClassLoader extends URLClassLoader {
     public Class<?> findClass(String name, boolean checkGlobal) throws ClassNotFoundException {
         Class<?> result = classes.get(name);
 
-        if(checkGlobal && result == null) {
+        if (checkGlobal && result == null) {
             result = PluginManager.findClass(name);
             classes.put(name, result);
         }
 
-        if(result == null) {
-            result = super.findClass(name);
-            classes.put(name, result);
-        }
+        if (result == null)
+            try {
+                result = super.findClass(name);
+            } catch (Exception e) {
+                // Failed to find class from fw classloader, I manually define it from the jar file
+                try {
+                    JarFile jarFile = new JarFile(getPluginFile());
+                    JarEntry jarEntry = jarFile.getJarEntry(name.replace(".", "/") + ".class");
+                    if (jarEntry == null) throw new ClassNotFoundException("Class file not exists.");
 
+                    InputStream is = jarFile.getInputStream(jarEntry);
+                    byte[] target = new byte[is.available()];
+                    if (is.read(target) < 0) throw new ClassNotFoundException("Unable to read class file.");
+
+                    jarFile.close();
+                    is.close();
+
+                    result = defineClass(name, target, 0, target.length);
+                } catch (IOException ex) {
+                    throw new ClassNotFoundException("Jar file not exists.");
+                }
+            }
+
+        if (result != null) classes.put(name, result);
         return result;
     }
 }

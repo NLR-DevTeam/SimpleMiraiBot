@@ -251,16 +251,6 @@ public class BotMain {
         return currentMessageID;
     }
 
-    public static int getMessageIDByMessageSource(MessageSource source) {
-        if (!currentMessages.containsValue(source)) return -1;
-
-        for (Integer id : currentMessages.keySet())
-            if (currentMessages.get(id).equals(source))
-                return id;
-
-        return -1;
-    }
-
     public static int getMessageIDByMessageTime(int messageTime) {
         for (Integer id : currentMessages.keySet())
             if (currentMessages.get(id).getTime() == messageTime)

@@ -1,7 +1,8 @@
 package cn.xiaym.simplemiraibot.utils.mirai;
 
-import static net.mamoe.mirai.utils.BotConfiguration.MiraiProtocol.*;
 import net.mamoe.mirai.utils.BotConfiguration;
+
+import static net.mamoe.mirai.utils.BotConfiguration.MiraiProtocol.*;
 
 public class ProtocolConvertor {
     public static BotConfiguration.MiraiProtocol convertToProtocol(String converting) {
@@ -21,7 +22,6 @@ public class ProtocolConvertor {
             case ANDROID_WATCH -> "AndroidWatch";
             case IPAD -> "IPad";
             case MACOS -> "MacOS";
-            default -> null;
         };
     }
 }
