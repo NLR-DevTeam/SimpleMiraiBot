@@ -263,6 +263,10 @@ public class BotMain {
         return currentMessages.get(id);
     }
 
+    public static HashMap<Integer, MessageSource> getMessages() {
+        return currentMessages;
+    }
+
     public static Bot getBot() {
         return bot;
     }
