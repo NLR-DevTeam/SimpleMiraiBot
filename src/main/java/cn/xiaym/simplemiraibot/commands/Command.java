@@ -7,6 +7,9 @@ import org.jline.reader.impl.completer.NullCompleter;
 
 import java.util.ArrayList;
 
+/**
+ * 插件命令类
+ */
 public class Command {
     private final String name;
     private final String description;
@@ -39,9 +42,6 @@ public class Command {
         this.executor = executor;
     }
 
-    /* Method getCommandCompleter:
-     * Rewrite is required.
-     */
     public Completer getCommandCompleter(String label, ArrayList<String> args) {
         return new NullCompleter();
     }

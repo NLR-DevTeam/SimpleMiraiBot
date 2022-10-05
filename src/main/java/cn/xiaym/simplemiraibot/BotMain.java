@@ -32,6 +32,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
+/**
+ * Simple Mirai Bot 主类
+ */
 public class BotMain {
     private static LineReader JLineLineReader;
     private static Thread readingThread;
@@ -44,12 +47,17 @@ public class BotMain {
     private final static ArrayList<Long> allowedGroups = new ArrayList<>();
     private final static ArrayList<String> attrList = new ArrayList<>();
 
+    /**
+     * SMB 的入口点，包含配置读取、Bot 登录等
+     *
+     * @param args 命令行参数
+     */
     public static void main(String[] args) {
         try {
             Terminal JLineTerminal = TerminalBuilder.builder().jansi(true).build();
             JLineLineReader = LineReaderBuilder.builder().terminal(JLineTerminal).completer(new CommandCompleter()).build();
             readingThread = new Thread(new InputReader());
-        } catch(IOException JLineEx) {
+        } catch (IOException JLineEx) {
             System.out.println("无法初始化 JLine!");
             JLineEx.printStackTrace();
             System.exit(1);
@@ -141,8 +149,8 @@ public class BotMain {
             for (String part : ConfigUtil.getConfig().getString("chatting.listeningGroups").split(",")) {
                 allowedGroups.add(Long.parseLong(part.trim()));
             }
-        } catch(InterruptedException ignored) {
-        } catch(Exception ex) {
+        } catch (InterruptedException ignored) {
+        } catch (Exception ex) {
             Logger.err("无法转换监听群列表，请检查格式.");
             if (BotMain.useDebug()) ex.printStackTrace();
             shutdown();
@@ -151,7 +159,13 @@ public class BotMain {
         readingThread.start();
     }
 
-    // Attr
+    /**
+     * 设置 "属性"，可用 hasAttr 方法查看是否包含属性
+     *
+     * @param key     属性名
+     * @param enabled 设置为 true 时添加属性, 为 false 时清除属性
+     * @see BotMain#hasAttr(String)
+     */
     public static void setAttr(String key, boolean enabled) {
         if (enabled) {
             attrList.add(key);
@@ -159,14 +173,31 @@ public class BotMain {
             attrList.remove(key);
     }
 
+    /**
+     * 检查是否包含某个属性
+     *
+     * @param key 属性名
+     * @return 是否包含指定属性
+     * @see BotMain#setAttr(String, boolean)
+     */
     public static boolean hasAttr(String key) {
         return attrList.contains(key);
     }
 
+    /**
+     * 获取通用 LineReader 对象
+     *
+     * @return SMB 默认 LineReader 对象
+     */
     public static LineReader getLineReader() {
         return JLineLineReader;
     }
 
+    /**
+     * 切换机器人聊天的聊群
+     *
+     * @param groupId 聊群号
+     */
     public static void changeGroup(long groupId) {
         if (!bot.getGroups().contains(groupId)) {
             Logger.warning("机器人未在聊群 (ID " + groupId + ") 中，发送消息将受到限制，请使用 /changeGroup <聊群号> 来切换聊群。");
@@ -180,10 +211,20 @@ public class BotMain {
         }
     }
 
+    /**
+     * LineReader 方法，在输入框之前打印字符串，推荐使用 Logger
+     *
+     * @param str 要打印的字符串
+     * @see Logger
+     */
     public static void printAbove(String str) {
         JLineLineReader.printAbove(str);
     }
 
+    /**
+     * 关闭 Simple Mirai Bot <br/>
+     * 会执行每个插件的 onShutdown 方法，然后正常退出
+     */
     public static void shutdown() {
         Logger.info("正在关闭 SimpleMiraiBot ...");
         readingThread.interrupt();
@@ -200,6 +241,12 @@ public class BotMain {
         System.exit(0);
     }
 
+    /**
+     * 很抽象的方法名 <br/>
+     * 实际上是处理用户输入，可以模拟运行命令 (以 "/" 开头)
+     *
+     * @param input 用户输入的内容
+     */
     public static void processInput(String input) {
         if (input.isEmpty()) return;
 
@@ -218,7 +265,11 @@ public class BotMain {
                 return;
             }
 
-            cmd.getExecutor().onCommand(input, args);
+            try {
+                cmd.getExecutor().onCommand(input, args);
+            } catch (NullPointerException ex) {
+                Logger.err("此命令不包含 Executor, 执行失败.");
+            }
 
             return;
         }
@@ -228,29 +279,62 @@ public class BotMain {
         sendMessage(MiraiCode.deserializeMiraiCode(input));
     }
 
+    /**
+     * 通用的方法，向机器人主动聊天的聊群发送消息 <br/>
+     * 有 try-catch 环绕，可防止机器人被禁言而报错
+     *
+     * @param message 消息内容
+     */
     public static void sendMessage(Message message) {
         try {
-            Objects.requireNonNull(bot.getGroup(defaultGroup)).sendMessage(message);
+            Objects.requireNonNull(getCurrentGroup()).sendMessage(message);
         } catch (BotIsBeingMutedException e) {
             Logger.warning("机器人已经被禁言，无法发言。");
         }
     }
 
+    /**
+     * 返回是否使用调试模式
+     *
+     * @return 是否使用调试模式
+     * @see BotMain#main(String[])
+     */
     public static boolean useDebug() {
         return debug;
     }
 
+    /**
+     * 返回是否允许接收某个聊群的消息
+     *
+     * @param groupID 聊群号
+     * @return 是否允许接收指定聊群的消息
+     * @see ConfigUtil#init()
+     */
     public static boolean isAllowedGroup(long groupID) {
         if (acceptAllGroup) return true;
         return allowedGroups.contains(groupID);
     }
 
-    public synchronized static int requestNewMessageID(MessageSource source) {
-        currentMessageID++;
-        currentMessages.put(currentMessageID, source);
-        return currentMessageID;
+    /**
+     * 请求新的消息 ID
+     *
+     * @param source 消息源
+     * @return 新消息 ID
+     */
+    public static int requestNewMessageID(MessageSource source) {
+        synchronized (BotMain.class) {
+            currentMessageID++;
+            currentMessages.put(currentMessageID, source);
+            return currentMessageID;
+        }
     }
 
+    /**
+     * 根据消息时间获取消息 ID
+     *
+     * @param messageTime 消息时间
+     * @return 消息 ID
+     */
     public static int getMessageIDByMessageTime(int messageTime) {
         for (Integer id : currentMessages.keySet())
             if (currentMessages.get(id).getTime() == messageTime)
@@ -259,18 +343,39 @@ public class BotMain {
         return -1;
     }
 
+    /**
+     * 根据消息 ID 获取 MessageSource
+     *
+     * @param id 消息 ID
+     * @return 消息源
+     */
     public static MessageSource getMessageByMessageID(int id) {
         return currentMessages.get(id);
     }
 
+    /**
+     * API方法, 获取所有消息
+     *
+     * @return Map[消息ID, 消息源]
+     */
     public static HashMap<Integer, MessageSource> getMessages() {
         return currentMessages;
     }
 
+    /**
+     * 获取机器人对象
+     *
+     * @return 机器人对象
+     */
     public static Bot getBot() {
         return bot;
     }
 
+    /**
+     * 获取机器人正在聊天的群对象
+     *
+     * @return 机器人正在聊天的群对象
+     */
     public static Group getCurrentGroup() {
         return bot.getGroup(defaultGroup);
     }

@@ -12,27 +12,41 @@
  - 发送戳一戳 （命令: `/nudge`）
  - 发送语音消息 （命令: `/sendAudio`）
  - 发送图片消息 （命令: `/uploadImage`）
+ - 查询图片消息 （命令: `/queryImage`）
  - 多聊群切换 （命令: `/changeGroup`）
  - 私聊 （命令: `/msg`）
  - 切换协议（在配置文件中设置）
  - 完整 Tab 补全支持
 
+### 扩展
+
+Simple Mirai Bot 有较为完善的扩展系统 <br>
+*由于 JVM 的特性，它只能加载插件，不能卸载插件* <br>
+以下为官方扩展:
+
+- [SMBServer - 通过网页使用您的 Simple Mirai Bot](https://github.com/XIAYM-gh/SMB-Server)
+
 ### 下载 & 更新
-如果您 **第一次使用** Simple-Mirai-Bot，请在 [releases](https://github.com/XIAYM-gh/Simple-Mirai-Bot/releases/latest/) 中下载最新的 Simple-Mirai-Bot.7z <br>
-如果您想要 **更新** Simple-Mirai-Bot **本体**，请在 [releases](https://github.com/XIAYM-gh/Simple-Mirai-Bot/releases/latest/) 中下载最新的 Simple-Mirai-Bot.jar 并 **覆盖** 在 SMB 工作目录.
+
+如果您 **第一次使用** Simple-Mirai-Bot，请在 [releases](https://github.com/XIAYM-gh/Simple-Mirai-Bot/releases/latest/)
+中下载最新的 Simple-Mirai-Bot.7z <br>
+如果您想要 **更新** Simple-Mirai-Bot **本体**
+，请在 [releases](https://github.com/XIAYM-gh/Simple-Mirai-Bot/releases/latest/) 中下载最新的 Simple-Mirai-Bot.jar 并 **
+覆盖** 在 SMB 工作目录.
 
 ### 启动
+
 此项目基于 Java 17 编写，使用了许多 Java 17 的新特性，所以 *请务必使用 **Java 17 或更高版本*** 启动 SMB <br>
 解压后在 Shell / CMD 中输入命令启动 Simple-Mirai-Bot.
 
 在 `Windows` 下:
 ```batch
-java -cp mirai-core-all-2.12.2-all.jar;Simple-Mirai-Bot.jar cn.xiaym.simplemiraibot.BotMain
+java -cp mirai-core-all-2.12.3-all.jar;Simple-Mirai-Bot.jar cn.xiaym.simplemiraibot.BotMain
 ```
 
 在 `Linux / Unix / MacOS` 系统下:
 ```shell
-java -cp mirai-core-all-2.12.2-all.jar:Simple-Mirai-Bot.jar cn.xiaym.simplemiraibot.BotMain
+java -cp mirai-core-all-2.12.3-all.jar:Simple-Mirai-Bot.jar cn.xiaym.simplemiraibot.BotMain
 ```
 
 *Then, Enjoy :)*
