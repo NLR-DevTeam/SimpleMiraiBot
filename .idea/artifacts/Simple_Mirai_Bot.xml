@@ -8,7 +8,7 @@
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/fusesource/jansi/jansi/2.4.0/jansi-2.4.0.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/me/carleslc/Simple-YAML/Simple-Configuration/1.8.1/Simple-Configuration-1.8.1.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/me/carleslc/Simple-YAML/Simple-Yaml/1.8.1/Simple-Yaml-1.8.1.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/slf4j/slf4j-nop/1.7.36/slf4j-nop-1.7.36.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../.m2Repo/org/slf4j/slf4j-nop/2.0.3/slf4j-nop-2.0.3.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

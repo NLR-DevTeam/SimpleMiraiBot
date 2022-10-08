@@ -14,9 +14,27 @@ import static org.fusesource.jansi.Ansi.ansi;
 
 public class Logger {
     static {
-        System.setOut(new outObserver());
+        System.setOut(new PrintStream(new ByteArrayOutputStream()) {
+            public void println(String o) {
+                Logger.info(o, "[STDOUT] ");
+            }
+
+            public void println(Object o) {
+                Logger.info(o, "[STDOUT] ");
+            }
+        });
+
         System.setErr(new PrintStream(new ByteArrayOutputStream()));
-        if (ConfigUtil.getConfig().getBoolean("misc.debug")) System.setErr(new outObserver());
+        if (ConfigUtil.getConfig().getBoolean("misc.debug"))
+            System.setErr(new PrintStream(new ByteArrayOutputStream()) {
+                public void println(String o) {
+                    Logger.err(o, "[STDERR] ");
+                }
+
+                public void println(Object o) {
+                    Logger.err(o, "[STDERR] ");
+                }
+            });
     }
 
     private static void out(Object Printing, String Prefix, Color PrefixColor, Color TextColor) {
@@ -61,17 +79,4 @@ public class Logger {
         for (String line : String.valueOf(obj).split("\n"))
             Logger.out(prefix + line, "E", RED, RED);
     }
-}
-
-final class outObserver extends PrintStream {
-
-    public outObserver() {
-        super(new ByteArrayOutputStream());
-    }
-
-    public void print(String o) { println(o); }
-    public void print(Object o) { println(o); }
-
-    public void println(String o) { Logger.info(o); }
-    public void println(Object o) { Logger.info(o); }
 }
