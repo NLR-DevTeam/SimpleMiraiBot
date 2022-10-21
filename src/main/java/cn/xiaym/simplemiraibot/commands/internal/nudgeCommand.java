@@ -17,6 +17,7 @@ public class nudgeCommand extends Command implements CommandExecutor {
         setExecutor(this);
     }
 
+    @Override
     public Completer getCommandCompleter(String label, ArrayList<String> args) {
         ArrayList<String> arr = new ArrayList<>();
 

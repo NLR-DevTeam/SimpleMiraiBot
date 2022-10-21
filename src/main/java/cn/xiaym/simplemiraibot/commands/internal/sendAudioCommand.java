@@ -18,6 +18,7 @@ public class sendAudioCommand extends Command implements CommandExecutor {
         setExecutor(this);
     }
 
+    @Override
     public Completer getCommandCompleter(String label, ArrayList<String> args) {
         return new Completers.FilesCompleter(new File("."));
     }

@@ -43,6 +43,21 @@ public class CommandCompleter implements Completer {
         Completer cmdCompleter = cmd.getCommandCompleter(line, args);
         if (cmdCompleter == null) cmdCompleter = new NullCompleter();
 
+        if (cmdCompleter instanceof ArgumentCompleter argumentCompleter) {
+            Completer[] completers = new Completer[2 + argumentCompleter.getCompleters().size()];
+            completers[0] = new StringsCompleter(CommandManager.getCommandNames());
+
+            for (int i = 0; i < argumentCompleter.getCompleters().size(); i++)
+                completers[i + 1] = argumentCompleter.getCompleters().get(i);
+
+            completers[argumentCompleter.getCompleters().size() + 1] = new NullCompleter();
+
+            new ArgumentCompleter(completers)
+                    .complete(lineReader, parsedLine, list);
+
+            return;
+        }
+
         new ArgumentCompleter(new StringsCompleter(CommandManager.getCommandNames()), cmdCompleter, new NullCompleter())
                 .complete(lineReader, parsedLine, list);
     }

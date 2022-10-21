@@ -16,6 +16,7 @@ public class changeGroupCommand extends Command implements CommandExecutor {
         setExecutor(this);
     }
 
+    @Override
     public Completer getCommandCompleter(String label, ArrayList<String> args) {
         ArrayList<String> arr = new ArrayList<>();
 
@@ -33,7 +34,7 @@ public class changeGroupCommand extends Command implements CommandExecutor {
         }
 
         try {
-            BotMain.changeGroup(Long.parseLong(args.get(1)));
+            BotMain.changeGroup(Long.parseLong(args.get(1).trim()));
         } catch (NumberFormatException ex) {
             Logger.warning("无法解析聊群号，请重试.");
         }

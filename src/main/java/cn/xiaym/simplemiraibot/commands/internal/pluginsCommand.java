@@ -8,8 +8,8 @@ import cn.xiaym.simplemiraibot.utils.Logger;
 
 import java.util.ArrayList;
 
-public class PluginsCommand extends Command implements CommandExecutor {
-    public PluginsCommand() {
+public class pluginsCommand extends Command implements CommandExecutor {
+    public pluginsCommand() {
         super("plugins", "列出 SMB 已经加载的插件的列表.", "/plugins");
         setExecutor(this);
     }

@@ -5,18 +5,18 @@
 
 ### 功能
 目前它支持的功能有:
- - 发送消息（支持解析 Mirai Code）
- - 基础命令系统（使用 `/help` 查看全部命令）
- - 回复消息 （命令: `/reply`）
- - 撤回消息 （命令: `/recall`）
- - 发送戳一戳 （命令: `/nudge`）
- - 发送语音消息 （命令: `/sendAudio`）
- - 发送图片消息 （命令: `/uploadImage`）
- - 查询图片消息 （命令: `/queryImage`）
- - 多聊群切换 （命令: `/changeGroup`）
- - 私聊 （命令: `/msg`）
- - 切换协议（在配置文件中设置）
- - 完整 Tab 补全支持
+
+- 发送消息 (支持解析 Mirai Code)
+- 基础命令系统 (使用 `/help` 查看全部命令)
+- 回复消息 (命令: `/reply`)
+- 撤回消息 (命令: `/recall`)
+- 发送戳一戳 (命令: `/nudge`)
+- 发送语音消息 (命令: `/sendAudio`)
+- 图片操作 (命令: `/image`)
+- 多聊群切换 (命令: `/changeGroup`)
+- 私聊 (命令: `/msg`)
+- 切换协议(在配置文件中设置)
+- 完整 Tab 补全支持
 
 ### 扩展
 
@@ -49,7 +49,7 @@ java -cp mirai-core-all-2.12.3-all.jar;Simple-Mirai-Bot.jar cn.xiaym.simplemirai
 java -cp mirai-core-all-2.12.3-all.jar:Simple-Mirai-Bot.jar cn.xiaym.simplemiraibot.BotMain
 ```
 
-*Then, Enjoy :)*
+*Enjoy it! xwx*
 
 ### 协议
 此项目继承 Mirai 的 AGPLv3 协议，根据此协议，您对于 SMB 的任何修改或引用都必须开放源代码. <br>

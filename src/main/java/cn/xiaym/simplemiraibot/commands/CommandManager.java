@@ -4,7 +4,6 @@ import cn.xiaym.simplemiraibot.commands.internal.*;
 import cn.xiaym.simplemiraibot.plugins.JavaPlugin;
 import cn.xiaym.simplemiraibot.utils.bot.CommandCompleter;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,12 +22,11 @@ public class CommandManager {
         registeredCommands.put(new msgCommand(), null);
         registeredCommands.put(new nudgeCommand(), null);
         registeredCommands.put(new sendAudioCommand(), null);
-        registeredCommands.put(new uploadImageCommand(), null);
         registeredCommands.put(new groupListCommand(), null);
         registeredCommands.put(new friendListCommand(), null);
         registeredCommands.put(new memberListCommand(), null);
-        registeredCommands.put(new PluginsCommand(), null);
-        registeredCommands.put(new queryImageCommand(), null);
+        registeredCommands.put(new pluginsCommand(), null);
+        registeredCommands.put(new imageCommand(), null);
         CommandCompleter.updateCompleter();
     }
 
@@ -38,7 +36,6 @@ public class CommandManager {
         CommandCompleter.updateCompleter();
     }
 
-    @Nullable
     public static Command getCommand(String commandName) {
         for (Command command : registeredCommands.keySet())
             if (command.getName().equals(commandName))
