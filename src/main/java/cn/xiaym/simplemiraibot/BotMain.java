@@ -81,12 +81,22 @@ public class BotMain {
                 """);
 
         if (ConfigUtil.getConfig().getLong("account.qq") == 0L
-                || ConfigUtil.getConfig().getString("account.password").equals("")) {
-            Logger.warning("""
-                    警告: 您尚未填写 QQ号 或 密码，请在 BotConfig.yml 中更改.
-                    Simple Mirai Bot 即将关闭.
-                    """);
-            shutdown();
+                || ConfigUtil.getConfig().getString("account.password").isBlank()) {
+            Logger.warning("警告: 您尚未填写 QQ号 或 密码，需要手动输入!");
+
+            try {
+                Long qq = Long.parseLong(JLineLineReader.readLine("QQ 号码 > "));
+                String password = JLineLineReader.readLine("密码 > ", '*');
+
+                ConfigUtil.getConfig().set("account.qq", qq);
+                ConfigUtil.getConfig().set("account.password", password);
+                ConfigUtil.getConfig().save();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Logger.err("无法保存 QQ 设置, Simple Mirai Bot 正在关闭...");
+
+                shutdown();
+            }
         }
 
         debug = ConfigUtil.getConfig().getBoolean("misc.debug");
@@ -152,7 +162,7 @@ public class BotMain {
         } catch (InterruptedException ignored) {
         } catch (Exception ex) {
             Logger.err("无法转换监听群列表，请检查格式.");
-            if (BotMain.useDebug()) ex.printStackTrace();
+            ex.printStackTrace();
             shutdown();
         }
 
