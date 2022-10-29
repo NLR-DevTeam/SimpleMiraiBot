@@ -3,15 +3,16 @@ package cn.xiaym.simplemiraibot.utils;
 import java.util.ArrayList;
 
 public class ArgumentParser {
-    /* 返回一个解析完的ArrayList
-     * 调用方法 argumentParser.parse(String 要解析的内容)
-     */
     public static ArrayList<String> parse(String origin) {
         if (origin.isBlank()) return new ArrayList<>();
 
         boolean shouldMerge = false;
-        final char ESCAPE = '\uEEEE';
-        final String processedString = origin.trim().replace("\\\"", String.valueOf(ESCAPE));
+
+        // 转义空格与引号
+        final String processedString = origin.trim()
+                .replace("\\\"", "\uEEEE")
+                .replace("\\ ", "\uEEEF");
+
         final StringBuilder temp = new StringBuilder();
         final ArrayList<String> output = new ArrayList<>();
 
@@ -27,6 +28,7 @@ public class ArgumentParser {
                     output.add(temp.toString());
                     temp.setLength(0);
                 }
+
                 case ' ' -> {
                     if (shouldMerge) {
                         temp.append(ch);
@@ -36,7 +38,10 @@ public class ArgumentParser {
                     output.add(temp.toString());
                     temp.setLength(0);
                 }
-                case ESCAPE -> temp.append('"');
+
+                case '\uEEEE' -> temp.append('"'); //引号转义
+                case '\uEEEF' -> temp.append(' '); //空格转义
+
                 default -> temp.append(ch);
             }
         }

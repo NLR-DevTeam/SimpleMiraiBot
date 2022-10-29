@@ -73,7 +73,7 @@ public class PluginManager {
 
             SimpleClassLoader cl = new SimpleClassLoader(pluginFile, yamlFile.getString("main"), BotMain.class.getClassLoader());
             JavaPlugin p = cl.getDeclaredPlugin();
-            p.constructFrom(yamlFile);
+            p.constructFrom(yamlFile, pluginFile);
             cl.close();
 
             return p;
