@@ -41,12 +41,12 @@ Simple Mirai Bot 有较为完善的扩展系统 <br>
 
 在 `Windows` 下:
 ```batch
-java -cp mirai-core-all-2.12.3-all.jar;Simple-Mirai-Bot.jar cn.xiaym.simplemiraibot.BotMain
+java -cp mirai-core-all-2.13.2-all.jar;Simple-Mirai-Bot.jar cn.xiaym.simplemiraibot.BotMain
 ```
 
 在 `Linux / Unix / MacOS` 系统下:
 ```shell
-java -cp mirai-core-all-2.12.3-all.jar:Simple-Mirai-Bot.jar cn.xiaym.simplemiraibot.BotMain
+java -cp mirai-core-all-2.13.2-all.jar:Simple-Mirai-Bot.jar cn.xiaym.simplemiraibot.BotMain
 ```
 
 *Enjoy it! xwx*

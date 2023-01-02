@@ -4,12 +4,12 @@
     <root id="archive" name="Simple-Mirai-Bot.jar">
       <element id="module-output" name="simple-mirai-bot" />
       <element id="extracted-dir" path="$PROJECT_DIR$/../.m2Repo/org/jline/jline/3.21.0/jline-3.21.0.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/../.m2Repo/org/slf4j/slf4j-nop/2.0.3/slf4j-nop-2.0.3.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/../.m2Repo/org/yaml/snakeyaml/1.30/snakeyaml-1.30.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/../.m2Repo/org/fusesource/jansi/jansi/2.4.0/jansi-2.4.0.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/../.m2Repo/me/carleslc/Simple-YAML/Simple-Configuration/1.8.1/Simple-Configuration-1.8.1.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/../.m2Repo/me/carleslc/Simple-YAML/Simple-Yaml/1.8.1/Simple-Yaml-1.8.1.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/../.m2Repo/org/slf4j/slf4j-api/2.0.3/slf4j-api-2.0.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../.m2Repo/org/slf4j/slf4j-nop/2.0.5/slf4j-nop-2.0.5.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

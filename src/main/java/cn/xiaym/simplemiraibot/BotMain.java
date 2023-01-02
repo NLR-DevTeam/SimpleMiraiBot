@@ -131,7 +131,19 @@ public class BotMain {
         bot.getEventChannel().registerListenerHost(new GroupEventListener());
         bot.getEventChannel().registerListenerHost(new FriendEventListener());
 
-        bot.login();
+        try {
+            bot.login();
+        } catch (Exception ex) {
+            Logger.err("机器人登录失败!");
+            ex.printStackTrace();
+
+            if (!debug) {
+                Logger.err("检测到您未开启调试模式, 正在输出简略信息:");
+                Logger.err(ex);
+            }
+
+            System.exit(-1);
+        }
 
         if (!bot.isOnline()) {
             Logger.warning("机器人登录失败，请重试。");
