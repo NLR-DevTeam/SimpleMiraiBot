@@ -1,3 +1,7 @@
+## 已过时警告
+由于代码不完善以及未知原因，在为 SMB 贡献代码或是插件时可能会出现各种问题，因此我们推荐您使用官方的 [Mirai Console Loader](https://github.com/iTXTech/Mirai-Console-Loader)  
+如果您只想将 SMB 用作聊天用途，请继续阅读。
+
 ## Simple-Mirai-Bot
 一个基于 Mirai 框架的多协议轻量级机器人。
 
